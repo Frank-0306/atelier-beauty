@@ -1,0 +1,89 @@
+{%- capture ab_items -%}
+  {%- for block in section.blocks -%}
+    <li class="ab-marquee__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+    <li class="ab-marquee__sep" aria-hidden="true">{{ section.settings.separator | escape }}</li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if section.blocks.size > 0 -%}
+  <ab-marquee
+    class="ab-section ab-marquee color-{{ section.settings.color_scheme }} gradient"
+    style="--ab-marquee-duration: {{ section.settings.speed }}s;"
+  >
+    <h2 class="visually-hidden">{{ section.settings.label | escape }}</h2>
+    <div class="ab-marquee__viewport">
+      <div class="ab-marquee__track">
+        <ul class="ab-marquee__group" role="list">{{ ab_items }}</ul>
+        <ul class="ab-marquee__group" role="list" aria-hidden="true">{{ ab_items }}</ul>
+      </div>
+    </div>
+    <button type="button" class="ab-marquee__toggle" aria-pressed="false" data-marquee-toggle>
+      <span class="visually-hidden">Pause scrolling text</span>
+      <span class="ab-marquee__toggle-icon" aria-hidden="true"></span>
+    </button>
+  </ab-marquee>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Atelier · Marquee",
+  "tag": "div",
+  "class": "section-ab-marquee",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Accessible label",
+      "default": "Atelier highlights"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator",
+      "default": "✦"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 15,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "label": "Loop duration",
+      "default": 45
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Lacquered lips"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Marquee",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Lacquered lips" } },
+        { "type": "item", "settings": { "text": "Second-skin complexion" } },
+        { "type": "item", "settings": { "text": "Velvet colour" } },
+        { "type": "item", "settings": { "text": "Quiet rituals" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

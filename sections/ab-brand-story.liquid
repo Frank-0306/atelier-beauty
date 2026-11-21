@@ -1,0 +1,220 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.6 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.6 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  class="ab-section ab-story ab-story--image-{{ section.settings.image_position }} color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+  aria-labelledby="AbStoryHeading-{{ section.id }}"
+>
+  <div class="page-width ab-story__grid">
+    <figure class="ab-story__media" data-ab-reveal="mask">
+      {%- if section.settings.image != blank -%}
+        {{
+          section.settings.image
+          | image_url: width: 1400
+          | image_tag:
+            loading: 'lazy',
+            widths: '500, 750, 1000, 1400',
+            sizes: '(min-width: 990px) 42vw, 100vw',
+            class: 'ab-cover'
+        }}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'ab-placeholder ab-placeholder--rose' }}
+      {%- endif -%}
+      {%- if section.settings.image_caption != blank -%}
+        <figcaption class="ab-story__caption">{{ section.settings.image_caption | escape }}</figcaption>
+      {%- endif -%}
+    </figure>
+
+    <div class="ab-story__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ab-eyebrow" data-ab-reveal>{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 id="AbStoryHeading-{{ section.id }}" class="ab-display ab-story__statement" data-ab-reveal>
+        {{- section.settings.heading -}}
+      </h2>
+      {%- if section.settings.text != blank -%}
+        <div class="ab-story__body rte" data-ab-reveal>{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <ol class="ab-story__principles" role="list">
+          {%- for block in section.blocks -%}
+            <li class="ab-story__principle" {{ block.shopify_attributes }} data-ab-reveal>
+              <div>
+                <h3>{{ block.settings.title | escape }}</h3>
+                {%- if block.settings.text != blank -%}
+                  <p>{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+      {%- endif -%}
+
+      {%- if section.settings.signature != blank or section.settings.link_label != blank -%}
+        <div class="ab-story__footer" data-ab-reveal>
+          {%- if section.settings.signature != blank -%}
+            <p class="ab-story__signature">{{ section.settings.signature | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.link_label != blank -%}
+            <a class="ab-link" href="{{ section.settings.link_url | default: routes.root_url }}">
+              {{- section.settings.link_label | escape }}
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier · Brand story",
+  "tag": "div",
+  "class": "section-ab-story",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_caption",
+      "label": "Image caption",
+      "default": "Studio notes, Fall/Winter"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Our point of view"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Statement",
+      "default": "Beauty that feels <em>tailored,</em> never time-consuming."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Atelier Beauty began with a simple idea: the luxury of a couture fitting, applied to the five minutes you spend in front of the mirror. Fewer, better products — each designed to layer, travel and feel like yours.</p>"
+    },
+    {
+      "type": "text",
+      "id": "signature",
+      "label": "Signature",
+      "default": "— The Atelier team"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "default": "Read our story"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 112
+    }
+  ],
+  "blocks": [
+    {
+      "type": "principle",
+      "name": "Principle",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Edited, not endless"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A focused wardrobe of shades and textures designed to work together."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Brand story",
+      "blocks": [
+        {
+          "type": "principle",
+          "settings": {
+            "title": "Edited, not endless",
+            "text": "A focused wardrobe of shades and textures designed to work together."
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "title": "Texture first",
+            "text": "Every formula is built around how it feels — weightless, cushioned, velvet."
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "title": "Made to layer",
+            "text": "Skin, cheek and lip pieces that build from a quiet wash to evening intensity."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

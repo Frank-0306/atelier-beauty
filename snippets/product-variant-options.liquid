@@ -4,6 +4,7 @@
   @param {product_option} option - The product option whose values are rendered.
   @param {string} picker_type - The picker markup to render: `swatch`, `button`, `dropdown`, or `swatch_dropdown`.
   @param {block} [block] - The variant-picker block, required for swatch settings.
+  @param {boolean} [ab_shade] - Atelier: whether this option is a shade option that may use fallback colours.
   @param {object} [section] - The current product section context, supplied implicitly when rendered from that section and used to namespace option inputs.
 
   @example
@@ -24,6 +25,24 @@
       assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
     else
       assign swatch_value = null
+    endif
+
+    # Atelier: fallback shade colour — variant metafield custom.shade_hex, then theme palette ("Name: #hex" per line)
+    assign ab_fallback = null
+    if ab_shade and swatch_value == null
+      assign ab_fallback = value.variant.metafields.custom.shade_hex.value | default: value.variant.metafields.custom.shade_hex
+      if ab_fallback == blank
+        assign ab_value_key = value.name | downcase | strip
+        assign ab_lines = settings.ab_shade_palette | newline_to_br | split: '<br />'
+        for ab_line in ab_lines
+          assign ab_pair = ab_line | split: ':'
+          assign ab_key = ab_pair.first | downcase | strip
+          if ab_key == ab_value_key and ab_pair.size > 1
+            assign ab_fallback = ab_pair.last | strip
+            break
+          endif
+        endfor
+      endif
     endif
 
     assign option_disabled = true
@@ -66,6 +85,7 @@
       name: input_name,
       value: escaped_value,
       swatch: value.swatch,
+      fallback_color: ab_fallback,
       product_form_id: product_form_id,
       checked: value.selected,
       visually_disabled: option_disabled,

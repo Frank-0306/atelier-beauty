@@ -1,0 +1,291 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.6 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+    }
+  }
+{%- endstyle -%}
+
+<footer class="ab-section ab-footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="ab-footer__top">
+      {%- if section.settings.show_newsletter -%}
+        <div class="ab-footer__newsletter">
+          <h2 class="ab-display ab-footer__newsletter-heading">{{ section.settings.newsletter_heading }}</h2>
+          {%- if section.settings.newsletter_text != blank -%}
+            <p class="ab-footer__newsletter-text">{{ section.settings.newsletter_text | escape }}</p>
+          {%- endif -%}
+
+          {%- form 'customer', id: 'AbFooterNewsletter', class: 'ab-newsletter' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <label class="visually-hidden" for="AbFooterNewsletterEmail">{{ 'newsletter.label' | t }}</label>
+            <div class="ab-newsletter__field">
+              <input
+                id="AbFooterNewsletterEmail"
+                type="email"
+                name="contact[email]"
+                value="{{ form.email }}"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+                placeholder="{{ 'newsletter.label' | t }}"
+                {% if form.errors %}
+                  aria-invalid="true" aria-describedby="AbFooterNewsletterError"
+                {% elsif form.posted_successfully? %}
+                  aria-describedby="AbFooterNewsletterSuccess"
+                {% endif %}
+              >
+              <button type="submit" class="ab-newsletter__submit" name="commit">
+                {{- 'newsletter.button_label' | t }}
+                <span aria-hidden="true">&rarr;</span>
+              </button>
+            </div>
+            {%- if form.errors -%}
+              <p id="AbFooterNewsletterError" class="ab-form-msg ab-form-msg--error" role="alert">
+                {{- form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email -}}
+              </p>
+            {%- elsif form.posted_successfully? -%}
+              <p id="AbFooterNewsletterSuccess" class="ab-form-msg" role="status" tabindex="-1" autofocus>
+                {{- 'newsletter.success' | t -}}
+              </p>
+            {%- endif -%}
+            {%- if section.settings.newsletter_note != blank -%}
+              <p class="ab-newsletter__note">{{ section.settings.newsletter_note | escape }}</p>
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+
+      <div class="ab-footer__cols">
+        {%- for block in section.blocks -%}
+          <div class="ab-footer__col" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h2 class="ab-footer__col-title">{{ block.settings.heading | escape }}</h2>
+            {%- endif -%}
+            {%- case block.type -%}
+              {%- when 'menu' -%}
+                {%- assign ab_menu = linklists[block.settings.menu] -%}
+                {%- if ab_menu.links.size > 0 -%}
+                  <ul class="ab-footer__links" role="list">
+                    {%- for link in ab_menu.links -%}
+                      <li>
+                        <a
+                          href="{{ link.url }}"
+                          {% if link.current %}
+                            aria-current="page"
+                          {% endif %}
+                        >
+                          {{- link.title | escape -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- elsif request.design_mode -%}
+                  <p class="ab-footer__hint">Choose a menu in this block's settings.</p>
+                {%- endif -%}
+              {%- when 'text' -%}
+                <div class="ab-footer__text rte">{{ block.settings.text }}</div>
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+
+        {%- if section.settings.show_social -%}
+          <div class="ab-footer__col">
+            <h2 class="ab-footer__col-title">{{ section.settings.social_heading | escape }}</h2>
+            {%- render 'social-icons', class: 'ab-footer__social' -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.wordmark != blank -%}
+      <p class="ab-footer__wordmark" aria-hidden="true">{{ section.settings.wordmark }}</p>
+    {%- endif -%}
+
+    <div class="ab-footer__bottom">
+      <div class="ab-footer__legal">
+        <small class="ab-footer__copyright">
+          &copy; {{ 'now' | date: '%Y' }}
+          {{ shop.name | link_to: routes.root_url }}
+          {%- if section.settings.show_powered_by %} &middot; {{ powered_by_link }}{% endif -%}
+        </small>
+        {%- if section.settings.show_policy and shop.policies.size > 0 -%}
+          <ul class="ab-footer__policies" role="list">
+            {%- for policy in shop.policies -%}
+              {%- if policy != blank -%}
+                <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.demo_notice != blank -%}
+        <p class="ab-demo-note">{{ section.settings.demo_notice | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+        <div class="ab-footer__payment">
+          <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+          <ul class="list list-payment" role="list">
+            {%- for type in shop.enabled_payment_types -%}
+              <li class="list-payment__item">
+                {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Atelier · Footer",
+  "tag": "div",
+  "class": "section-ab-footer",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show newsletter",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Letters from the <em>atelier</em>"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "New shades, ritual notes and first access to limited editions. Twice a month, never more."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_note",
+      "label": "Newsletter note",
+      "default": "Subscribers are saved as customers in Shopify admin. Unsubscribe anytime."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social links",
+      "info": "Add links in Theme settings › Social media.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social heading",
+      "default": "Follow"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "wordmark",
+      "label": "Large wordmark",
+      "default": "Atelier <em>Beauty</em>"
+    },
+    {
+      "type": "text",
+      "id": "demo_notice",
+      "label": "Demo notice",
+      "default": "Portfolio demo store. Atelier Beauty is a fictional brand; orders are not fulfilled."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy",
+      "label": "Show policy links",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered_by",
+      "label": "Show “Powered by Shopify”",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-4"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 104
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Studio"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Designed in New York. Made for everyday rituals.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Footer",
+      "blocks": [
+        { "type": "menu" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,80 @@
+{%- assign ab_menu = linklists[section.settings.menu] -%}
+
+{%- if ab_menu.links.size > 0 -%}
+  <nav
+    class="ab-section ab-catnav color-{{ section.settings.color_scheme }} gradient"
+    aria-label="{{ section.settings.label | escape }}"
+  >
+    <div class="page-width">
+      <ul class="ab-catnav__list" role="list">
+        {%- for link in ab_menu.links -%}
+          {%- liquid
+            assign ab_is_current = false
+            if link.current or link.active
+              assign ab_is_current = true
+            elsif collection and link.url == collection.url
+              assign ab_is_current = true
+            endif
+          -%}
+          <li>
+            <a
+              class="ab-catnav__link"
+              href="{{ link.url }}"
+              {% if ab_is_current %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{- link.title | escape -}}
+              {%- if section.settings.show_count and link.type == 'collection_link' -%}
+                <sup class="ab-catnav__count">{{ link.object.products_count }}</sup>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </nav>
+{%- elsif request.design_mode -%}
+  <div class="page-width ab-catnav ab-catnav--empty">
+    <p>Choose a menu for the category bar (for example “Shop categories”).</p>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Atelier · Category bar",
+  "tag": "div",
+  "class": "section-ab-catnav",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "info": "Create it in Online Store › Navigation, e.g. All, Makeup, Skincare, Lip, Face, Eyes, Skin."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Accessible label",
+      "default": "Shop categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_count",
+      "label": "Show product counts",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Category bar"
+    }
+  ]
+}
+{% endschema %}

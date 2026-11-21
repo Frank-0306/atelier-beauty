@@ -1,0 +1,198 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.6 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.6 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  class="ab-section ab-index color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+  aria-labelledby="AbIndexHeading-{{ section.id }}"
+>
+  <div class="page-width">
+    <header class="ab-section-head ab-section-head--split">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="ab-eyebrow" data-ab-reveal>{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 id="AbIndexHeading-{{ section.id }}" class="ab-display ab-section-head__title" data-ab-reveal>
+          {{- section.settings.heading -}}
+        </h2>
+      </div>
+      {%- if section.settings.text != blank -%}
+        <div class="ab-section-head__text" data-ab-reveal>{{ section.settings.text }}</div>
+      {%- endif -%}
+    </header>
+
+    <ab-collection-index class="ab-index__grid">
+      <ol class="ab-index__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign ab_c = block.settings.collection
+            assign ab_title = block.settings.title | default: ab_c.title | default: 'Collection'
+            assign ab_url = ab_c.url | default: routes.collections_url
+            assign ab_image = block.settings.image | default: ab_c.featured_image
+            if block.settings.note != blank
+              assign ab_meta = block.settings.note
+            elsif ab_c != blank
+              assign ab_meta = ab_c.products_count | append: ' products'
+              if ab_c.products_count == 1
+                assign ab_meta = '1 product'
+              endif
+            else
+              assign ab_meta = ''
+            endif
+          -%}
+          <li class="ab-index__item{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+            <a class="ab-index__row" href="{{ ab_url }}" data-index="{{ forloop.index0 }}" data-ab-reveal>
+              <span class="ab-index__num" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+              <span class="ab-index__name">{{ ab_title | escape }}</span>
+              <span class="ab-index__meta">{{ ab_meta | escape }}</span>
+              <span class="ab-index__thumb" aria-hidden="true">
+                {%- if ab_image != blank -%}
+                  {{
+                    ab_image
+                    | image_url: width: 240
+                    | image_tag: loading: 'lazy', widths: '120, 240', sizes: '80px', class: 'ab-cover', alt: ''
+                  }}
+                {%- else -%}
+                  {{ 'collection-2' | placeholder_svg_tag: 'ab-placeholder' }}
+                {%- endif -%}
+              </span>
+              <span class="ab-index__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ol>
+
+      <div class="ab-index__preview" aria-hidden="true">
+        {%- for block in section.blocks -%}
+          {%- assign ab_c = block.settings.collection -%}
+          {%- assign ab_image = block.settings.image | default: ab_c.featured_image -%}
+          <div class="ab-index__slide{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+            {%- if ab_image != blank -%}
+              {{
+                ab_image
+                | image_url: width: 1200
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '500, 700, 900, 1200',
+                  sizes: '(min-width: 990px) 38vw, 1px',
+                  class: 'ab-cover',
+                  alt: ''
+              }}
+            {%- else -%}
+              {%- capture ab_ph -%}collection-{{ forloop.index | modulo: 6 | plus: 1 }}{%- endcapture -%}
+              {{ ab_ph | placeholder_svg_tag: 'ab-placeholder' }}
+            {%- endif -%}
+            <span class="ab-index__slide-label">
+              {{- block.settings.title | default: ab_c.title | default: 'Collection' | escape -}}
+            </span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </ab-collection-index>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier · Collections",
+  "tag": "div",
+  "class": "section-ab-index",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Atelier"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by <em>ritual</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Four chapters, one wardrobe. Move from lip to skin and build a routine that feels entirely your own.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title override"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Short note",
+          "info": "Replaces the automatic product count."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Preview image",
+          "info": "Defaults to the collection image."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Collections",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -2,6 +2,7 @@
   Renders a swatch from a color or image.
 
   @param {swatch} swatch - The swatch to render. An empty swatch renders as unavailable.
+  @param {string} [fallback_color] - Atelier: CSS colour used when the swatch has no colour or image.
   @param {string} [shape] - The swatch shape. Accepts `circle` or `square`; defaults to `circle`.
 
   @example
@@ -16,6 +17,8 @@
     assign swatch_focal_point = swatch.image.presentation.focal_point
   elsif swatch.color
     assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+  elsif fallback_color != blank
+    assign swatch_value = fallback_color | escape
   endif
 -%}
 

@@ -1,0 +1,246 @@
+{%- liquid
+  assign ab_main = section.settings.image_main
+  assign ab_detail = section.settings.image_detail
+  assign ab_badge = section.settings.badge_text | strip
+-%}
+
+<section
+  class="ab-section ab-hero color-{{ section.settings.color_scheme }} gradient"
+  aria-labelledby="AbHeroHeading-{{ section.id }}"
+>
+  <div class="ab-hero__inner page-width">
+    <div class="ab-hero__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="ab-eyebrow" data-ab-reveal>{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      <h2 id="AbHeroHeading-{{ section.id }}" class="ab-display ab-hero__title" data-ab-reveal>
+        {{- section.settings.heading -}}
+      </h2>
+
+      {%- if section.settings.text != blank -%}
+        <div class="ab-hero__text" data-ab-reveal>{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank or section.settings.link_label != blank -%}
+        <div class="ab-hero__actions" data-ab-reveal>
+          {%- if section.settings.button_label != blank -%}
+            <a
+              class="button ab-button"
+              href="{{ section.settings.button_link | default: routes.all_products_collection_url }}"
+            >
+              {{- section.settings.button_label | escape -}}
+            </a>
+          {%- endif -%}
+          {%- if section.settings.link_label != blank -%}
+            <a class="ab-link" href="{{ section.settings.link_url | default: routes.collections_url }}">
+              {{- section.settings.link_label | escape }}
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <nav class="ab-hero__index" aria-label="{{ section.settings.index_label | escape }}" data-ab-reveal>
+          <ol role="list">
+            {%- for block in section.blocks -%}
+              <li {{ block.shopify_attributes }}>
+                <a href="{{ block.settings.link | default: routes.collections_url }}">
+                  <span class="ab-hero__index-num" aria-hidden="true">
+                    {{- forloop.index | prepend: '0' -}}
+                  </span>
+                  {{ block.settings.label | escape }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ol>
+        </nav>
+      {%- endif -%}
+    </div>
+
+    <div class="ab-hero__media">
+      <figure class="ab-hero__frame ab-hero__frame--main" data-ab-reveal="mask">
+        {%- if ab_main != blank -%}
+          {{
+            ab_main
+            | image_url: width: 1800
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '600, 800, 1000, 1200, 1500, 1800',
+              sizes: '(min-width: 990px) 45vw, 88vw',
+              class: 'ab-cover'
+          }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'ab-placeholder' }}
+        {%- endif -%}
+      </figure>
+
+      <figure class="ab-hero__frame ab-hero__frame--detail" data-ab-reveal="mask">
+        {%- if ab_detail != blank -%}
+          {{
+            ab_detail
+            | image_url: width: 900
+            | image_tag:
+              loading: 'eager',
+              widths: '300, 450, 600, 900',
+              sizes: '(min-width: 990px) 20vw, 40vw',
+              class: 'ab-cover'
+          }}
+        {%- else -%}
+          {{ 'product-2' | placeholder_svg_tag: 'ab-placeholder ab-placeholder--rose' }}
+        {%- endif -%}
+      </figure>
+
+      {%- if section.settings.caption != blank -%}
+        <p class="ab-hero__caption">{{ section.settings.caption | escape }}</p>
+      {%- endif -%}
+
+      {%- if ab_badge != blank -%}
+        <svg class="ab-badge" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+          <defs>
+            <path
+              id="AbBadgePath-{{ section.id }}"
+              d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"
+            />
+          </defs>
+          <circle cx="100" cy="100" r="99" class="ab-badge__disc" />
+          <text class="ab-badge__text">
+            <textPath href="#AbBadgePath-{{ section.id }}" textLength="470">
+              {{- ab_badge | escape }} &#10022; {{ ab_badge | escape }} &#10022;
+            </textPath>
+          </text>
+          <text x="100" y="112" text-anchor="middle" class="ab-badge__mark">AB</text>
+        </svg>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier · Editorial hero",
+  "tag": "div",
+  "class": "section-ab-hero",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "N° 01 — The Velvet Edit"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Use italic for the accent word.",
+      "default": "Everyday <em>luxury,</em> composed by hand."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Modern formulas in quietly opulent textures — lacquered lips, second-skin complexions and rituals that make the ordinary feel considered.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop the edit"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Secondary link label",
+      "default": "Explore skincare"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Secondary link"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_main",
+      "label": "Main image",
+      "info": "Portrait, at least 1500 × 1875 px."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_detail",
+      "label": "Detail image",
+      "info": "A close crop — texture, swatch or product detail."
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Vertical caption",
+      "default": "Atelier Beauty — Modern Beauty, Everyday Luxury"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Rotating badge text",
+      "info": "Leave empty to hide the badge.",
+      "default": "Modern Beauty · Everyday Luxury"
+    },
+    {
+      "type": "header",
+      "content": "Category index"
+    },
+    {
+      "type": "text",
+      "id": "index_label",
+      "label": "Index label (for screen readers)",
+      "default": "Shop by category"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "index_link",
+      "name": "Index link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Lip"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Editorial hero",
+      "blocks": [
+        { "type": "index_link", "settings": { "label": "Lip" } },
+        { "type": "index_link", "settings": { "label": "Face" } },
+        { "type": "index_link", "settings": { "label": "Eyes" } },
+        { "type": "index_link", "settings": { "label": "Skin" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,43 @@
+{%- doc -%}
+  Atelier Beauty — compact add-to-bag control for editorial product layouts.
+  Single-variant products are added through Dawn's native <product-form> (cart drawer/notification updates included).
+  Products with options link to the product page so the shopper can choose a shade or size.
+
+  @param {product} product - The product to add.
+  @param {string} section_id - The current section ID, used to keep form IDs unique.
+  @param {string} [suffix] - Extra string appended to the form ID when the same product appears twice in a section.
+
+  @example
+  {% render 'ab-quick-add', product: product, section_id: section.id %}
+{%- enddoc -%}
+{%- liquid
+  assign ab_form_id = 'AbQuickAdd-' | append: section_id | append: '-' | append: product.id | append: suffix
+  assign ab_variant = product.selected_or_first_available_variant
+-%}
+{%- if product.has_only_default_variant and product.available -%}
+  <product-form class="ab-quick-add" data-section-id="{{ section_id }}">
+    {%- form 'product', product, id: ab_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+      <input type="hidden" name="id" value="{{ ab_variant.id }}" disabled>
+      <button
+        type="submit"
+        name="add"
+        class="button ab-button ab-button--small"
+        aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
+      >
+        <span>{{ 'products.product.add_to_cart' | t }}</span>
+        {%- render 'loading-spinner' -%}
+      </button>
+    {%- endform -%}
+    <div class="product-form__error-message-wrapper ab-quick-add__error" role="alert" hidden>
+      <span class="product-form__error-message"></span>
+    </div>
+  </product-form>
+{%- elsif product.available -%}
+  <a class="ab-link" href="{{ product.url }}">
+    {{- 'products.product.choose_options' | t -}}
+    <span class="visually-hidden">: {{ product.title | escape }}</span>
+    <span aria-hidden="true">&rarr;</span>
+  </a>
+{%- else -%}
+  <span class="ab-soldout">{{ 'products.product.sold_out' | t }}</span>
+{%- endif -%}

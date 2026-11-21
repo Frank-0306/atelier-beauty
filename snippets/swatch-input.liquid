@@ -5,6 +5,7 @@
   @param {string} name - The input name.
   @param {string} value - The input value and label title.
   @param {swatch} swatch - The swatch displayed in the label.
+  @param {string} [fallback_color] - Atelier: CSS colour used when the swatch has no colour or image.
   @param {string} product_form_id - The ID of the form associated with the input.
   @param {string} [type] - The input type. Accepts `radio` or `checkbox`; defaults to `radio`.
   @param {boolean} [checked] - Whether the input is checked. Defaults to false.
@@ -48,6 +49,6 @@
   title="{{ value }}"
   class="swatch-input__label{% if shape == 'square' %} swatch-input__label--square{% endif %}"
 >
-  {% render 'swatch', swatch: swatch, shape: shape %}
+  {% render 'swatch', swatch: swatch, shape: shape, fallback_color: fallback_color %}
   {{ help_text }}
 </label>

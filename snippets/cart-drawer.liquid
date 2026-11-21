@@ -76,6 +76,8 @@
           </span>
         </button>
       </div>
+      {%- comment -%} Atelier: free-shipping progress (only when enabled in theme settings) {%- endcomment -%}
+      {%- render 'ab-free-shipping', context: 'drawer' -%}
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"
@@ -486,6 +488,8 @@
           </div>
           <div id="CartDrawer-CartErrors" role="alert"></div>
         </form>
+        {%- comment -%} Atelier: cross-sell {%- endcomment -%}
+        {%- render 'ab-cart-upsell' -%}
       </cart-drawer-items>
       <div class="drawer__footer">
         {%- if settings.show_cart_note -%}
@@ -511,6 +515,8 @@
         <!-- Start blocks -->
         <!-- Subtotals -->
 
+        {%- comment -%} Atelier: discount codes {%- endcomment -%}
+        {%- render 'ab-cart-discount', id_prefix: 'CartDrawer' -%}
         <div class="cart-drawer__footer" {{ block.shopify_attributes }}>
           <div>
             {%- if cart.cart_level_discount_applications.size > 0 -%}

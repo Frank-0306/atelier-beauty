@@ -1,0 +1,40 @@
+{%- doc -%}
+  Atelier Beauty — free-shipping progress message for the cart.
+  Only renders when enabled in Theme settings › Atelier Beauty › Cart, because the theme cannot read
+  shipping rules: enable it after creating a matching free-shipping rate in Settings › Shipping and delivery.
+  Uses the cart total after discounts, in the store currency (single-currency store).
+
+  @param {string} [context] - Where it renders, used for a modifier class (`drawer` or `page`).
+
+  @example
+  {% render 'ab-free-shipping', context: 'drawer' %}
+{%- enddoc -%}
+{%- if settings.ab_free_shipping_enable and settings.ab_free_shipping_threshold > 0 and cart.item_count > 0 -%}
+  {%- liquid
+    assign ab_threshold = settings.ab_free_shipping_threshold | times: 100
+    assign ab_remaining = ab_threshold | minus: cart.total_price
+    assign ab_progress = cart.total_price | times: 100 | divided_by: ab_threshold
+    if ab_progress > 100
+      assign ab_progress = 100
+    endif
+  -%}
+  <div class="ab-ship ab-ship--{{ context | default: 'drawer' }}{% if ab_remaining <= 0 %} is-complete{% endif %}">
+    <p class="ab-ship__message">
+      {%- if ab_remaining > 0 -%}
+        You're <strong>{{ ab_remaining | money }}</strong> away from complimentary shipping.
+      {%- else -%}
+        Your order ships free.
+      {%- endif -%}
+    </p>
+    <div
+      class="ab-ship__bar"
+      role="progressbar"
+      aria-label="Progress towards free shipping"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="{{ ab_progress }}"
+    >
+      <span class="ab-ship__fill" style="--ab-progress: {{ ab_progress }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

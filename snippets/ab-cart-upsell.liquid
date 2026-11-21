@@ -1,0 +1,46 @@
+{%- doc -%}
+  Atelier Beauty — "Complete the ritual" cross-sell inside the cart drawer.
+  Shows up to three available products from the collection chosen in Theme settings › Atelier Beauty › Cart,
+  skipping products that are already in the cart. Single-variant products can be added directly.
+
+  @example
+  {% render 'ab-cart-upsell' %}
+{%- enddoc -%}
+{%- assign ab_collection = settings.ab_upsell_collection -%}
+{%- if ab_collection != blank and cart.item_count > 0 -%}
+  {%- liquid
+    assign ab_in_cart = cart.items | map: 'product_id'
+    assign ab_shown = 0
+  -%}
+  {%- capture ab_items -%}
+    {%- for product in ab_collection.products limit: 12 -%}
+      {%- if ab_shown >= 3 -%}{%- break -%}{%- endif -%}
+      {%- if ab_in_cart contains product.id or product.available == false -%}{%- continue -%}{%- endif -%}
+      {%- assign ab_shown = ab_shown | plus: 1 -%}
+      <li class="ab-upsell__item">
+        <a class="ab-upsell__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+          {%- if product.featured_media -%}
+            {{
+              product.featured_media.preview_image
+              | image_url: width: 200
+              | image_tag: loading: 'lazy', widths: '100, 200', sizes: '72px', alt: ''
+            }}
+          {%- endif -%}
+        </a>
+        <div class="ab-upsell__info">
+          <a class="ab-upsell__title" href="{{ product.url }}">{{ product.title | escape }}</a>
+          <span class="ab-upsell__price">{{ product.price | money }}</span>
+        </div>
+        <div class="ab-upsell__action">
+          {%- render 'ab-quick-add', product: product, section_id: 'CartDrawerUpsell' -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if ab_shown > 0 -%}
+    <section class="ab-upsell" aria-labelledby="AbUpsellHeading">
+      <h3 id="AbUpsellHeading" class="ab-upsell__heading">{{ settings.ab_upsell_heading | escape }}</h3>
+      <ul class="ab-upsell__list" role="list">{{ ab_items }}</ul>
+    </section>
+  {%- endif -%}
+{%- endif -%}

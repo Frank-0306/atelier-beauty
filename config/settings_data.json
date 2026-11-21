@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": "Dawn",
   "presets": {
@@ -7,68 +16,68 @@
       "color_schemes": {
         "scheme-1": {
           "settings": {
-            "background": "#FFFFFF",
+            "background": "#F5EFE6",
             "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#FFFFFF",
-            "secondary_button_label": "#121212",
-            "shadow": "#121212"
+            "text": "#17120F",
+            "button": "#5B1526",
+            "button_label": "#F5EFE6",
+            "secondary_button_label": "#5B1526",
+            "shadow": "#17120F"
           }
         },
         "scheme-2": {
           "settings": {
-            "background": "#F3F3F3",
+            "background": "#EADCC9",
             "background_gradient": "",
-            "text": "#121212",
-            "button": "#121212",
-            "button_label": "#F3F3F3",
-            "secondary_button_label": "#121212",
-            "shadow": "#121212"
+            "text": "#17120F",
+            "button": "#5B1526",
+            "button_label": "#F5EFE6",
+            "secondary_button_label": "#5B1526",
+            "shadow": "#17120F"
           }
         },
         "scheme-3": {
           "settings": {
-            "background": "#242833",
+            "background": "#5B1526",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#000000",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#F5EFE6",
+            "button": "#F5EFE6",
+            "button_label": "#5B1526",
+            "secondary_button_label": "#F5EFE6",
+            "shadow": "#17120F"
           }
         },
         "scheme-4": {
           "settings": {
-            "background": "#121212",
+            "background": "#17120F",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#121212",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#F5EFE6",
+            "button": "#E6C3BE",
+            "button_label": "#17120F",
+            "secondary_button_label": "#F5EFE6",
+            "shadow": "#17120F"
           }
         },
         "scheme-5": {
           "settings": {
-            "background": "#334FB4",
+            "background": "#E6C3BE",
             "background_gradient": "",
-            "text": "#FFFFFF",
-            "button": "#FFFFFF",
-            "button_label": "#334FB4",
-            "secondary_button_label": "#FFFFFF",
-            "shadow": "#121212"
+            "text": "#17120F",
+            "button": "#5B1526",
+            "button_label": "#F5EFE6",
+            "secondary_button_label": "#5B1526",
+            "shadow": "#17120F"
           }
         }
       },
-      "type_header_font": "assistant_n4",
-      "heading_scale": 100,
-      "type_body_font": "assistant_n4",
+      "type_header_font": "playfair_display_n4",
+      "heading_scale": 110,
+      "type_body_font": "work_sans_n4",
       "body_scale": 100,
-      "page_width": 1200,
+      "page_width": 1400,
       "spacing_sections": 0,
-      "spacing_grid_horizontal": 8,
-      "spacing_grid_vertical": 8,
+      "spacing_grid_horizontal": 24,
+      "spacing_grid_vertical": 40,
       "animations_reveal_on_scroll": true,
       "animations_hover_elements": "none",
       "buttons_border_thickness": 1,
@@ -79,14 +88,14 @@
       "buttons_shadow_vertical_offset": 4,
       "buttons_shadow_blur": 5,
       "variant_pills_border_thickness": 1,
-      "variant_pills_border_opacity": 55,
-      "variant_pills_radius": 40,
+      "variant_pills_border_opacity": 35,
+      "variant_pills_radius": 0,
       "variant_pills_shadow_opacity": 0,
       "variant_pills_shadow_horizontal_offset": 0,
       "variant_pills_shadow_vertical_offset": 4,
       "variant_pills_shadow_blur": 5,
       "inputs_border_thickness": 1,
-      "inputs_border_opacity": 55,
+      "inputs_border_opacity": 35,
       "inputs_radius": 0,
       "inputs_shadow_opacity": 0,
       "inputs_shadow_horizontal_offset": 0,
@@ -95,7 +104,7 @@
       "card_style": "standard",
       "card_image_padding": 0,
       "card_text_alignment": "left",
-      "card_color_scheme": "scheme-2",
+      "card_color_scheme": "scheme-1",
       "card_border_thickness": 0,
       "card_border_opacity": 10,
       "card_corner_radius": 0,
@@ -106,7 +115,7 @@
       "collection_card_style": "standard",
       "collection_card_image_padding": 0,
       "collection_card_text_alignment": "left",
-      "collection_card_color_scheme": "scheme-2",
+      "collection_card_color_scheme": "scheme-1",
       "collection_card_border_thickness": 0,
       "collection_card_border_opacity": 10,
       "collection_card_corner_radius": 0,
@@ -117,7 +126,7 @@
       "blog_card_style": "standard",
       "blog_card_image_padding": 0,
       "blog_card_text_alignment": "left",
-      "blog_card_color_scheme": "scheme-2",
+      "blog_card_color_scheme": "scheme-1",
       "blog_card_border_thickness": 0,
       "blog_card_border_opacity": 10,
       "blog_card_corner_radius": 0,
@@ -132,7 +141,7 @@
       "text_boxes_shadow_horizontal_offset": 0,
       "text_boxes_shadow_vertical_offset": 4,
       "text_boxes_shadow_blur": 5,
-      "media_border_thickness": 1,
+      "media_border_thickness": 0,
       "media_border_opacity": 5,
       "media_radius": 0,
       "media_shadow_opacity": 0,
@@ -146,17 +155,17 @@
       "popup_shadow_horizontal_offset": 0,
       "popup_shadow_vertical_offset": 4,
       "popup_shadow_blur": 5,
-      "drawer_border_thickness": 1,
+      "drawer_border_thickness": 0,
       "drawer_border_opacity": 10,
       "drawer_shadow_opacity": 0,
       "drawer_shadow_horizontal_offset": 0,
       "drawer_shadow_vertical_offset": 4,
       "drawer_shadow_blur": 5,
-      "badge_position": "bottom left",
-      "badge_corner_radius": 40,
-      "sale_badge_color_scheme": "scheme-4",
-      "sold_out_badge_color_scheme": "scheme-3",
-      "brand_headline": "",
+      "badge_position": "top left",
+      "badge_corner_radius": 0,
+      "sale_badge_color_scheme": "scheme-3",
+      "sold_out_badge_color_scheme": "scheme-4",
+      "brand_headline": "Modern Beauty, Everyday Luxury",
       "brand_description": "<p></p>",
       "brand_image_width": 100,
       "social_twitter_link": "",
@@ -170,9 +179,9 @@
       "social_vimeo_link": "",
       "predictive_search_enabled": true,
       "predictive_search_show_vendor": false,
-      "predictive_search_show_price": false,
-      "currency_code_enabled": true,
-      "cart_type": "notification",
+      "predictive_search_show_price": true,
+      "currency_code_enabled": false,
+      "cart_type": "drawer",
       "show_vendor": false,
       "show_cart_note": false,
       "cart_drawer_collection": "",
@@ -190,7 +199,16 @@
             "color_scheme": "scheme-1"
           }
         }
-      }
+      },
+      "ab_shade_option_names": "Shade,Color,Colour,Tone",
+      "ab_shade_palette": "Bordeaux Silk: #5B1526\nRosewood: #8E4A49\nPetal Nude: #C99089\nCinnabar: #9E2B25\nBare Linen: #B98A78\nMulberry: #6E2C3E\nClay Rose: #A65E5A\nClear Veil: #EBD9CF\nRose Glaze: #D8A3A0\nFig: #7A3B47\n1N Porcelain: #F1D7C4\n2W Ivory Sand: #E3C2A3\n3N Honey: #C99B73\n4W Caramel: #A8744E\n5N Cocoa: #7A5137\n6W Espresso: #4F3426\nPowder Rose: #E2A9A4\nApricot Silk: #E3A385\nBerry Haze: #A9566A\nPearl: #EFE3D6\nChampagne: #E6CBA2\nRose Gold: #D7A28E\nSandstone: #B99779\nBordeaux: #6B2A35\nSmoke: #4A4142\nNoir: #151214\nEspresso Brown: #3C2A22",
+      "ab_card_show_shades": true,
+      "ab_card_max_shades": 5,
+      "ab_cart_discount_field": true,
+      "ab_free_shipping_enable": false,
+      "ab_free_shipping_threshold": 50,
+      "ab_upsell_collection": "best-sellers",
+      "ab_upsell_heading": "Complete the ritual"
     }
   }
 }

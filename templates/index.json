@@ -1,75 +1,274 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "ab-hero-editorial",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "lip": {
+          "type": "index_link",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "label": "Lip",
+            "link": "shopify://collections/lip"
           }
         },
-        "button": {
-          "type": "buttons",
+        "face": {
+          "type": "index_link",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "label": "Face",
+            "link": "shopify://collections/face"
+          }
+        },
+        "eyes": {
+          "type": "index_link",
+          "settings": {
+            "label": "Eyes",
+            "link": "shopify://collections/eyes"
+          }
+        },
+        "skin": {
+          "type": "index_link",
+          "settings": {
+            "label": "Skin",
+            "link": "shopify://collections/skin"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "lip",
+        "face",
+        "eyes",
+        "skin"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "eyebrow": "N° 01 — The Velvet Edit",
+        "heading": "Everyday <em>luxury,</em> composed by hand.",
+        "text": "<p>Modern formulas in quietly opulent textures — lacquered lips, second-skin complexions and rituals that make the ordinary feel considered.</p>",
+        "button_label": "Shop the edit",
+        "button_link": "shopify://collections/makeup",
+        "link_label": "Explore skincare",
+        "link_url": "shopify://collections/skincare",
+        "image_main": "shopify://shop_images/pexels-mucyo-emilie-420891209-25293894.jpg",
+        "image_detail": "shopify://shop_images/pexels-polina-kovaleva-8101533.jpg",
+        "caption": "Atelier Beauty — Modern Beauty, Everyday Luxury",
+        "badge_text": "Modern Beauty · Everyday Luxury",
+        "index_label": "Shop by category",
+        "color_scheme": "scheme-1"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "marquee": {
+      "type": "ab-marquee",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "text": "Lacquered lips"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "text": "Second-skin complexion"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "text": "Velvet colour"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "text": "Quiet rituals"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
+        "label": "Atelier highlights",
+        "separator": "✦",
+        "speed": 45,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "collections": {
+      "type": "ab-collection-index",
+      "blocks": {
+        "c1": {
+          "type": "collection",
+          "settings": {
+            "collection": "lip",
+            "title": "",
+            "note": "Lacquers, pencils & oils"
+          }
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {
+            "collection": "face",
+            "title": "",
+            "note": "Complexion & glow"
+          }
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {
+            "collection": "eyes",
+            "title": "",
+            "note": "Shadow & line"
+          }
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {
+            "collection": "skin",
+            "title": "",
+            "note": "Daily rituals"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "The Atelier",
+        "heading": "Shop by <em>ritual</em>",
+        "text": "<p>Four chapters, one wardrobe. Move from lip to skin and build a routine that feels entirely your own.</p>",
         "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "padding_top": 72,
+        "padding_bottom": 112
+      }
+    },
+    "edit": {
+      "type": "ab-the-edit",
+      "settings": {
+        "eyebrow": "Most coveted",
+        "heading": "The <em>Edit</em>",
+        "text": "<p>The pieces our community reaches for first — chosen for texture, colour and the quiet confidence they bring.</p>",
+        "collection": "best-sellers",
+        "products_to_show": 7,
+        "feature_label": "Editor's pick",
+        "details_label": "View details",
+        "rail_label": "More from the edit",
+        "view_all_label": "Shop all",
+        "color_scheme": "scheme-2",
+        "padding_top": 112,
+        "padding_bottom": 112
+      }
+    },
+    "launch": {
+      "type": "ab-launch-promo",
+      "blocks": {
+        "l1": {
+          "type": "launch",
+          "settings": {
+            "product": "velvet-ink-lip-lacquer",
+            "label": "New",
+            "note": "Four lacquered shades with a cushioned, high-shine finish."
+          }
+        },
+        "p1": {
+          "type": "promo",
+          "settings": {
+            "eyebrow": "Members' offer",
+            "heading": "15% off your <em>first</em> ritual",
+            "text": "Demo offer for portfolio purposes. Create a matching discount in Shopify admin to make it work at checkout.",
+            "code": "ATELIER15",
+            "button_label": "Shop makeup",
+            "link": "shopify://collections/makeup",
+            "color_scheme": "scheme-3"
+          }
+        },
+        "l2": {
+          "type": "launch",
+          "settings": {
+            "product": "halo-liquid-highlighter",
+            "label": "Just in",
+            "note": "Weightless glow in three light-catching tones."
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "p1",
+        "l2"
+      ],
+      "settings": {
+        "eyebrow": "Just arrived",
+        "heading": "New <em>&amp;</em> now",
+        "color_scheme": "scheme-1",
+        "padding_top": 112,
+        "padding_bottom": 96
+      }
+    },
+    "story": {
+      "type": "ab-brand-story",
+      "blocks": {
+        "s1": {
+          "type": "principle",
+          "settings": {
+            "title": "Edited, not endless",
+            "text": "A focused wardrobe of shades and textures designed to work together."
+          }
+        },
+        "s2": {
+          "type": "principle",
+          "settings": {
+            "title": "Texture first",
+            "text": "Every formula is built around how it feels — weightless, cushioned, velvet."
+          }
+        },
+        "s3": {
+          "type": "principle",
+          "settings": {
+            "title": "Made to layer",
+            "text": "Skin, cheek and lip pieces that build from a quiet wash to evening intensity."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/pexels-polina-kovaleva-8101521.jpg",
+        "image_caption": "Studio notes, Fall/Winter",
+        "image_position": "left",
+        "eyebrow": "Our point of view",
+        "heading": "Beauty that feels <em>tailored,</em> never time-consuming.",
+        "text": "<p>Atelier Beauty began with a simple idea: the luxury of a couture fitting, applied to the five minutes you spend in front of the mirror. Fewer, better products — each designed to layer, travel and feel like yours.</p>",
+        "signature": "— The Atelier team",
+        "link_label": "Shop skincare",
+        "link_url": "shopify://collections/skincare",
+        "color_scheme": "scheme-5",
+        "padding_top": 112,
+        "padding_bottom": 112
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "marquee",
+    "collections",
+    "edit",
+    "launch",
+    "story"
   ]
 }

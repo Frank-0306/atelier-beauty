@@ -32,6 +32,20 @@
             assign picker_type = 'swatch'
           endif
         endif
+
+        # Atelier: options named like "Shade" render as visual swatches (color from metafield or theme palette)
+        assign ab_shade = false
+        assign ab_option_name = option.name | downcase | strip
+        assign ab_shade_names = settings.ab_shade_option_names | default: 'shade,color,colour,tone' | downcase | split: ','
+        for ab_name in ab_shade_names
+          assign ab_name_clean = ab_name | strip
+          if ab_name_clean == ab_option_name
+            assign ab_shade = true
+          endif
+        endfor
+        if ab_shade and block.settings.swatch_shape != 'none' and picker_type == 'button'
+          assign picker_type = 'swatch'
+        endif
       -%}
       {%- if picker_type == 'swatch' -%}
         <fieldset class="js product-form__input product-form__input--swatch">
@@ -44,7 +58,8 @@
           {% render 'product-variant-options',
             option: option,
             block: block,
-            picker_type: picker_type
+            picker_type: picker_type,
+            ab_shade: ab_shade
           %}
         </fieldset>
       {%- elsif picker_type == 'button' -%}

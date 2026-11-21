@@ -1,0 +1,229 @@
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.6 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.6 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign ab_collection = section.settings.collection
+  assign ab_has_products = false
+  if ab_collection != blank and ab_collection.products_count > 0
+    assign ab_has_products = true
+  endif
+  assign ab_rail_limit = section.settings.products_to_show | minus: 1
+-%}
+
+<section
+  class="ab-section ab-edit color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+  aria-labelledby="AbEditHeading-{{ section.id }}"
+>
+  <div class="page-width">
+    <header class="ab-section-head ab-section-head--split">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="ab-eyebrow" data-ab-reveal>{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 id="AbEditHeading-{{ section.id }}" class="ab-display ab-section-head__title" data-ab-reveal>
+          {{- section.settings.heading -}}
+        </h2>
+      </div>
+      <div class="ab-section-head__aside" data-ab-reveal>
+        {%- if section.settings.text != blank -%}
+          <div class="ab-section-head__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        {%- if section.settings.view_all_label != blank -%}
+          <a class="ab-link" href="{{ ab_collection.url | default: routes.all_products_collection_url }}">
+            {{- section.settings.view_all_label | escape }}
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </header>
+
+    {%- if ab_has_products -%}
+      {%- for product in ab_collection.products limit: 1 -%}
+        {%- assign ab_media = product.featured_media -%}
+        <article class="ab-edit__feature" aria-labelledby="AbEditFeature-{{ section.id }}">
+          <a class="ab-edit__feature-media" href="{{ product.url }}" tabindex="-1" aria-hidden="true" data-ab-reveal="mask">
+            {%- if ab_media -%}
+              {{
+                ab_media.preview_image
+                | image_url: width: 1600
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '600, 900, 1200, 1600',
+                  sizes: '(min-width: 990px) 58vw, 100vw',
+                  class: 'ab-cover',
+                  alt: ''
+              }}
+            {%- else -%}
+              <span class="ab-tile__monogram">{{ product.title | slice: 0 }}</span>
+            {%- endif -%}
+          </a>
+          <div class="ab-edit__feature-info">
+            <p class="ab-edit__feature-num" aria-hidden="true">01</p>
+            <p class="ab-eyebrow">{{ section.settings.feature_label | escape }}</p>
+            <h3 id="AbEditFeature-{{ section.id }}" class="ab-display ab-edit__feature-title">
+              <a href="{{ product.url }}">{{ product.title | escape }}</a>
+            </h3>
+            {%- if product.description != blank -%}
+              <p class="ab-edit__feature-desc">{{ product.description | replace: '</p>', ' </p>' | strip_html | truncatewords: 32 }}</p>
+            {%- endif -%}
+            {%- render 'price', product: product, price_class: 'ab-edit__price', show_compare_at_price: true -%}
+            {%- render 'ab-card-shades', product: product -%}
+            <div class="ab-edit__feature-actions">
+              {%- render 'ab-quick-add', product: product, section_id: section.id, suffix: '-feature' -%}
+              <a class="ab-link" href="{{ product.url }}">
+                {{- section.settings.details_label | escape -}}
+                <span class="visually-hidden">: {{ product.title | escape }}</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    {%- endif -%}
+
+    <ab-rail class="ab-rail">
+      <div class="ab-rail__controls">
+        <p class="ab-rail__hint" aria-hidden="true">{{ section.settings.rail_label | escape }}</p>
+        <div class="ab-rail__buttons">
+          <button type="button" class="ab-rail__btn" data-rail-prev aria-label="{{ 'general.slider.previous_slide' | t }}">
+            <span aria-hidden="true">&larr;</span>
+          </button>
+          <button type="button" class="ab-rail__btn" data-rail-next aria-label="{{ 'general.slider.next_slide' | t }}">
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+      <ul
+        class="ab-rail__track"
+        role="list"
+        data-rail-track
+        tabindex="0"
+        aria-label="{{ section.settings.rail_label | escape }}"
+      >
+        {%- if ab_has_products -%}
+          {%- for product in ab_collection.products offset: 1 limit: ab_rail_limit -%}
+            {%- assign ab_index = forloop.index | plus: 1 -%}
+            <li data-ab-reveal>
+              {%- render 'ab-product-tile', product: product, index: ab_index, section_id: section.id -%}
+            </li>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..4) -%}
+            <li>{%- render 'ab-product-tile', product: blank, index: i, section_id: section.id -%}</li>
+          {%- endfor -%}
+        {%- endif -%}
+      </ul>
+    </ab-rail>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Atelier · The Edit",
+  "tag": "div",
+  "class": "section-ab-edit",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Most coveted"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The <em>Edit</em>"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>The pieces our community reaches for first — chosen for texture, colour and the quiet confidence they bring.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "The first product becomes the featured piece; the rest fill the rail."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "feature_label",
+      "label": "Featured label",
+      "default": "Editor's pick"
+    },
+    {
+      "type": "text",
+      "id": "details_label",
+      "label": "Details link label",
+      "default": "View details"
+    },
+    {
+      "type": "text",
+      "id": "rail_label",
+      "label": "Rail label",
+      "default": "More from the edit"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "Shop all"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 96
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · The Edit"
+    }
+  ]
+}
+{% endschema %}
+

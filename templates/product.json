@@ -3,7 +3,7 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
+        "eyebrow": {
           "type": "text",
           "settings": {
             "text": "{{ product.vendor }}",
@@ -11,10 +11,12 @@
           }
         },
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -24,34 +26,96 @@
           }
         },
         "quantity_selector": {
-          "type": "quantity_selector"
+          "type": "quantity_selector",
+          "settings": {}
         },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
+            "show_dynamic_checkout": false,
             "show_gift_card_recipient": true
           }
         },
         "description": {
-          "type": "description"
+          "type": "description",
+          "settings": {}
         },
-        "share": {
-          "type": "share",
+        "acc_ingredients": {
+          "type": "ab_accordion",
           "settings": {
-            "share_label": "Share"
+            "heading": "Ingredients",
+            "icon": "leaf",
+            "metafield_key": "custom.ingredients",
+            "fallback": "",
+            "open": false
+          }
+        },
+        "acc_apply": {
+          "type": "ab_accordion",
+          "settings": {
+            "heading": "How to apply",
+            "icon": "lipstick",
+            "metafield_key": "custom.how_to_use",
+            "fallback": "",
+            "open": false
+          }
+        },
+        "acc_shipping": {
+          "type": "ab_accordion",
+          "settings": {
+            "heading": "Shipping & returns",
+            "icon": "truck",
+            "metafield_key": "custom.shipping_note",
+            "fallback": "<p>This is a portfolio demo store: orders placed here are test orders and are not shipped. In a live store this area would hold delivery times and the returns policy.</p>",
+            "open": false
+          }
+        },
+        "inventory": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "uppercase",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": true
+          }
+        },
+        "complementary": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "Pairs well with",
+            "make_collapsible_row": false,
+            "icon": "price_tag",
+            "product_list_limit": 3,
+            "products_per_page": 3,
+            "pagination_style": "counter",
+            "image_ratio": "portrait",
+            "enable_quick_add": true
+          }
+        },
+        "acc_benefits": {
+          "type": "ab_accordion",
+          "settings": {
+            "heading": "Why you'll love it",
+            "icon": "none",
+            "metafield_key": "custom.benefits",
+            "fallback": "",
+            "open": false
           }
         }
       },
       "block_order": [
-        "vendor",
+        "eyebrow",
         "title",
         "price",
+        "inventory",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
         "description",
-        "share"
+        "acc_benefits",
+        "acc_ingredients",
+        "acc_apply",
+        "acc_shipping",
+        "complementary"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -60,13 +124,13 @@
         "gallery_layout": "stacked",
         "media_size": "large",
         "constrain_to_viewport": true,
-        "media_fit": "contain",
+        "media_fit": "cover",
         "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
+        "mobile_thumbnails": "show",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "padding_top": 24,
+        "padding_bottom": 48
       }
     },
     "disclosures": {
@@ -79,25 +143,33 @@
     "related-products": {
       "type": "related-products",
       "settings": {
-        "heading": "You may also like",
+        "heading": "Complete the ritual",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
+        "image_ratio": "portrait",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
         "show_rating": false,
         "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "padding_top": 72,
+        "padding_bottom": 96
+      }
+    },
+    "sticky": {
+      "type": "ab-sticky-atc",
+      "settings": {
+        "mobile_only": false,
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
     "main",
     "disclosures",
-    "related-products"
+    "related-products",
+    "sticky"
   ]
 }

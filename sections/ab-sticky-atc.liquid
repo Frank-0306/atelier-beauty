@@ -1,0 +1,68 @@
+{%- comment -%}
+  Atelier Beauty — sticky add-to-bag bar.
+  Appears once the main add-to-cart button scrolls out of view. It never submits its own form:
+  it mirrors the main product form (price, selected variant, availability) and clicks Dawn's
+  real submit button, so variants, inventory errors and the cart drawer behave exactly as on the page.
+{%- endcomment -%}
+{%- if product -%}
+  <ab-sticky-atc
+    class="ab-sticky color-{{ section.settings.color_scheme }} gradient{% if section.settings.mobile_only %} ab-sticky--mobile-only{% endif %}"
+    hidden
+  >
+    <div class="ab-sticky__inner page-width">
+      {%- if product.featured_media -%}
+        <div class="ab-sticky__thumb" aria-hidden="true">
+          {{
+            product.featured_media.preview_image
+            | image_url: width: 120
+            | image_tag: loading: 'lazy', widths: '60, 120', sizes: '48px', alt: ''
+          }}
+        </div>
+      {%- endif -%}
+      <div class="ab-sticky__info">
+        <p class="ab-sticky__title">{{ product.title | escape }}</p>
+        <p class="ab-sticky__meta">
+          <span data-sticky-variant>
+            {%- unless product.has_only_default_variant -%}
+              {{- product.selected_or_first_available_variant.title | escape -}}
+            {%- endunless -%}
+          </span>
+          <span data-sticky-price>{{ product.selected_or_first_available_variant.price | money }}</span>
+        </p>
+      </div>
+      <button type="button" class="button ab-sticky__button" data-sticky-button>
+        {{ 'products.product.add_to_cart' | t }}
+      </button>
+    </div>
+  </ab-sticky-atc>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Atelier · Sticky add",
+  "tag": "div",
+  "class": "section-ab-sticky",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "mobile_only",
+      "label": "Show on mobile only",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Atelier · Sticky add"
+    }
+  ]
+}
+{% endschema %}

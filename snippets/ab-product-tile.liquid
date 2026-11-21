@@ -1,0 +1,78 @@
+{%- doc -%}
+  Atelier Beauty — numbered editorial product tile (used by the "The Edit" rail).
+  Falls back to a placeholder tile when no product is passed (theme editor onboarding).
+
+  @param {product} [product] - The product to render.
+  @param {number} index - Position shown as the tile number.
+  @param {string} section_id - The current section ID.
+  @param {boolean} [lazy] - Lazy-load the image. Defaults to true.
+
+  @example
+  {% render 'ab-product-tile', product: product, index: forloop.index, section_id: section.id %}
+{%- enddoc -%}
+{%- liquid
+  assign ab_num = index | prepend: '00' | slice: -2, 2
+  assign ab_loading = 'lazy'
+  if lazy == false
+    assign ab_loading = 'eager'
+  endif
+-%}
+<article class="ab-tile">
+  {%- if product != blank -%}
+    {%- assign ab_media = product.featured_media -%}
+    {%- assign ab_alt_media = product.media[1] -%}
+    <a class="ab-tile__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+      {%- if ab_media -%}
+        {{
+          ab_media.preview_image
+          | image_url: width: 900
+          | image_tag:
+            loading: ab_loading,
+            widths: '360, 540, 720, 900',
+            sizes: '(min-width: 990px) 30vw, (min-width: 750px) 33vw, 75vw',
+            class: 'ab-tile__img',
+            alt: ''
+        }}
+        {%- if ab_alt_media and ab_alt_media.media_type == 'image' -%}
+          {{
+            ab_alt_media.preview_image
+            | image_url: width: 900
+            | image_tag:
+              loading: 'lazy',
+              widths: '360, 540, 720, 900',
+              sizes: '(min-width: 990px) 30vw, (min-width: 750px) 33vw, 75vw',
+              class: 'ab-tile__img ab-tile__img--alt',
+              alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        <span class="ab-tile__monogram">{{ product.title | slice: 0 }}</span>
+      {%- endif -%}
+      {%- if product.available == false -%}
+        <span class="ab-tag">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif product.compare_at_price > product.price -%}
+        <span class="ab-tag">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+    </a>
+    <div class="ab-tile__body">
+      <p class="ab-tile__num">N&deg; {{ ab_num }}{% if product.type != blank %} &middot; {{ product.type | escape }}{% endif %}</p>
+      <h3 class="ab-tile__title">
+        <a href="{{ product.url }}">{{ product.title | escape }}</a>
+      </h3>
+      {%- render 'price', product: product, price_class: 'ab-tile__price', show_compare_at_price: true -%}
+      {%- render 'ab-card-shades', product: product -%}
+      <div class="ab-tile__action">
+        {%- render 'ab-quick-add', product: product, section_id: section_id -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="ab-tile__media">
+      {{ 'product-1' | placeholder_svg_tag: 'ab-placeholder' }}
+    </div>
+    <div class="ab-tile__body">
+      <p class="ab-tile__num">N&deg; {{ ab_num }}</p>
+      <h3 class="ab-tile__title">Product name</h3>
+      <p class="ab-tile__price">$00.00</p>
+    </div>
+  {%- endif -%}
+</article>

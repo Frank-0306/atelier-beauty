@@ -1,0 +1,4 @@
+docs/*
+*.tmp
+*/.*.tmp
+locales/*.schema.json

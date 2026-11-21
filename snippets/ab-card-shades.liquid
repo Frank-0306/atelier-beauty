@@ -1,0 +1,62 @@
+{%- doc -%}
+  Atelier Beauty — shade dots shown under a product price.
+  Renders only for products that have an option listed in Theme settings › Atelier Beauty › Shade option names.
+  Colour priority: native swatch › variant metafield custom.shade_hex › theme shade palette › neutral.
+
+  @param {product} product - The product whose shades are shown.
+
+  @example
+  {% render 'ab-card-shades', product: card_product %}
+{%- enddoc -%}
+{%- if settings.ab_card_show_shades and product != blank and product.has_only_default_variant == false -%}
+  {%- liquid
+    assign ab_shade_names = settings.ab_shade_option_names | default: 'shade,color,colour,tone' | downcase | split: ','
+    assign ab_option = null
+    for opt in product.options_with_values
+      assign opt_name = opt.name | downcase | strip
+      for n in ab_shade_names
+        assign n_clean = n | strip
+        if n_clean == opt_name
+          assign ab_option = opt
+        endif
+      endfor
+    endfor
+  -%}
+  {%- if ab_option -%}
+    {%- liquid
+      assign ab_max = settings.ab_card_max_shades | default: 5
+      assign ab_lines = settings.ab_shade_palette | newline_to_br | split: '<br />'
+      assign ab_total = ab_option.values.size
+    -%}
+    <div class="ab-card-shades">
+      <span class="ab-card-shades__dots" aria-hidden="true">
+        {%- for value in ab_option.values limit: ab_max -%}
+          {%- liquid
+            assign ab_color = null
+            if value.swatch.color
+              assign ab_color = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+            else
+              assign ab_color = value.variant.metafields.custom.shade_hex.value | default: value.variant.metafields.custom.shade_hex
+            endif
+            if ab_color == blank
+              assign ab_key_value = value.name | downcase | strip
+              for ab_line in ab_lines
+                assign ab_pair = ab_line | split: ':'
+                assign ab_key = ab_pair.first | downcase | strip
+                if ab_key == ab_key_value and ab_pair.size > 1
+                  assign ab_color = ab_pair.last | strip
+                  break
+                endif
+              endfor
+            endif
+          -%}
+          <span class="ab-card-shades__dot" style="--ab-dot: {{ ab_color | default: 'var(--ab-sand)' | escape }};"></span>
+        {%- endfor -%}
+      </span>
+      <span class="ab-card-shades__count">
+        {{- ab_total }}
+        {% if ab_total == 1 %}{{ ab_option.name | downcase | escape }}{% else %}{{ ab_option.name | downcase | escape }}s{% endif -%}
+      </span>
+    </div>
+  {%- endif -%}
+{%- endif -%}

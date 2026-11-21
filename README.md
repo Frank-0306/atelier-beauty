@@ -1,99 +1,73 @@
-# Dawn
+# ATELIER BEAUTY — Shopify Theme (Portfolio Demo)
 
-[![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?color=informational)](/.github/CONTRIBUTING.md)
+> **Fictional brand. Portfolio project.** Atelier Beauty is not a real company. The storefront runs on a Shopify development store; orders are test orders and are never fulfilled.
 
-[Getting started](#getting-started) |
-[Staying up to date with Dawn changes](#staying-up-to-date-with-dawn-changes) |
-[Developer tools](#developer-tools) |
-[Contributing](#contributing) |
-[Code of conduct](#code-of-conduct) |
-[Theme Store submission](#theme-store-submission) |
-[License](#license)
+A luxury makeup and skincare storefront built as a **real Shopify Online Store 2.0 theme** — not a mock-up or a React imitation. It extends Shopify's **Dawn 16.2.0** with an editorial design system, custom sections and commerce features, while products, variants, inventory, cart, discounts and checkout all run on native Shopify.
 
-Dawn represents a HTML-first, JavaScript-only-as-needed approach to theme development. It's Shopify's first source available theme with performance, flexibility, and [Online Store 2.0 features](https://www.shopify.com/partners/blog/shopify-online-store) built-in and acts as a reference for building Shopify themes.
+**Concept:** *Modern Beauty, Everyday Luxury* · Palette: warm ivory, deep burgundy, powder rose, sand, ink · Type: Playfair Display + Work Sans (Shopify font library).
 
-* **Web-native in its purest form:** Themes run on the [evergreen web](https://www.w3.org/2001/tag/doc/evergreen-web/). We leverage the latest web browsers to their fullest, while maintaining support for the older ones through progressive enhancement—not polyfills.
-* **Lean, fast, and reliable:** Functionality and design defaults to “no” until it meets this requirement. Code ships on quality. Themes must be built with purpose. They shouldn’t support each and every feature in Shopify.
-* **Server-rendered:** HTML must be rendered by Shopify servers using Liquid. Business logic and platform primitives such as translations and money formatting don’t belong on the client. Async and on-demand rendering of parts of the page is OK, but we do it sparingly as a progressive enhancement.
-* **Functional, not pixel-perfect:** The Web doesn’t require each page to be rendered pixel-perfect by each browser engine. Using semantic markup, progressive enhancement, and clever design, we ensure that themes remain functional regardless of the browser.
+---
 
-You can find a more detailed version of our theme code principles in the [contribution guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md#theme-code-principles).
+## Highlights
 
-## Getting started
-We recommend using Dawn as a starting point for theme development. [Learn more on Shopify.dev](https://shopify.dev/themes/getting-started/create).
+| Area | What was built |
+|---|---|
+| **Homepage** | Editorial asymmetric hero with layered imagery and rotating badge · accessible marquee (pause control) · typographic collection index with hover preview · "The Edit" featured product + numbered rail with native add-to-cart · new arrivals & promotion mosaic with copy-to-clipboard code · brand story with numbered principles · custom footer with native newsletter form |
+| **Product page** | Visual shade swatches (colour from native swatches → variant metafield → theme palette) · live price/availability per variant · inventory indicator · lightbox zoom · metafield-driven accordions (benefits, ingredients, how to apply) that hide when empty · complementary products · related products · sticky add-to-bag bar that mirrors the real product form |
+| **Cart** | Dawn cart drawer restyled · discount codes via Shopify's Ajax Cart API (invalid codes are rejected and removed) · cross-sell ("Complete the ritual") from a merchant-chosen collection · optional free-shipping progress (off until a matching shipping rate exists) · inventory-capped quantities |
+| **Catalog** | Category bar driven by a navigation menu · native filtering & sorting (Storefront Filtering / Search & Discovery) · quick view modal · predictive search · shade dots on product cards |
+| **Admin experience** | Every custom section has a schema with blocks and settings; colours use theme colour schemes; nothing product-related is hard-coded |
 
-> If you're building a theme for the Shopify Theme Store, then you can use Dawn as a starting point. However, the theme that you submit needs to be [substantively different from Dawn](https://shopify.dev/themes/store/requirements#uniqueness) so that it provides added value for merchants. Learn about the [ways that you can use Dawn](https://shopify.dev/themes/tools/dawn#ways-to-use-dawn).
+## Tech stack
 
-Please note that the main branch may include code for features not yet released. The "stable" version of Dawn is available in the theme store.
+Shopify Liquid · Online Store 2.0 JSON templates · sections & blocks · section groups · metafields · HTML5 · modern CSS (no framework) · vanilla JavaScript (custom elements, progressive enhancement) · Shopify CLI · Git.
 
-## Staying up to date with Dawn changes
+## Project structure
 
-Say you're building a new theme off Dawn but you still want to be able to pull in the latest changes, you can add a remote `upstream` pointing to this Dawn repository.
+Custom files use the `ab-` prefix; Dawn files were changed only where an integration point was needed.
 
-1. Navigate to your local theme folder.
-2. Verify the list of remotes and validate that you have both an `origin` and `upstream`:
-```sh
-git remote -v
 ```
-3. If you don't see an `upstream`, you can add one that points to Shopify's Dawn repository:
-```sh
-git remote add upstream https://github.com/Shopify/dawn.git
-```
-4. Pull in the latest Dawn changes into your repository:
-```sh
-git fetch upstream
-git pull upstream main
+assets/
+  atelier.css            Design layer loaded after Dawn's base.css
+  atelier.js             Custom elements: reveal, rail, collection index, copy code,
+                         marquee, sticky add-to-bag, cart discount codes
+sections/
+  ab-hero-editorial      ab-marquee            ab-collection-index
+  ab-the-edit            ab-launch-promo       ab-brand-story
+  ab-footer              ab-collection-nav     ab-sticky-atc
+snippets/
+  ab-card-shades         ab-product-tile       ab-quick-add
+  ab-free-shipping       ab-cart-discount      ab-cart-upsell
+docs/
+  SETUP-ADMIN.md         Store configuration steps (Spanish)
+  TESTING.md             Test report
+  atelier-products.csv   Demo catalog (12 products, 32 variants)
 ```
 
-## Developer tools
+**Modified Dawn files** (search for `Atelier` comments): `layout/theme.liquid`, `sections/main-product.liquid` (new *Atelier accordion* block), `sections/main-cart-footer.liquid`, `snippets/cart-drawer.liquid`, `snippets/card-product.liquid`, `snippets/product-variant-picker.liquid`, `snippets/product-variant-options.liquid`, `snippets/swatch.liquid`, `snippets/swatch-input.liquid`, `config/settings_schema.json` (new *Atelier Beauty* settings group).
 
-There are a number of really useful tools that the Shopify Themes team uses during development. Dawn is already set up to work with these tools.
+## Key implementation notes
 
-### Shopify CLI
+- **Shade swatches without an app.** Options named like *Shade/Color/Tone* (configurable) render as swatches. Colour resolves from Shopify's native swatch, then the variant metafield `custom.shade_hex`, then a `Name: #hex` palette in theme settings.
+- **Sticky add-to-bag never duplicates cart logic.** It reads price/variant from the main product section and clicks Dawn's real submit button, so variant validation, inventory errors and the cart drawer stay native.
+- **Discount codes** use `POST /cart/update.js` with the `discount` parameter and re-render the drawer through the Section Rendering API. Shopify decides validity; rejected codes are removed so they never reach checkout.
+- **Free-shipping bar is opt-in.** A theme cannot read shipping rules, so the bar stays off until the merchant creates a matching rate and enables it.
+- **Motion is progressive.** Reveal animations only run when `prefers-reduced-motion` allows it, with a CSS fail-safe if JavaScript doesn't load; they are disabled in the theme editor.
 
-[Shopify CLI](https://github.com/Shopify/shopify-cli) helps you build Shopify themes faster and is used to automate and enhance your local development workflow. It comes bundled with a suite of commands for developing Shopify themes—everything from working with themes on a Shopify store (e.g. creating, publishing, deleting themes) or launching a development server for local theme development.
+## Local development
 
-You can follow this [quick start guide for theme developers](https://shopify.dev/docs/themes/tools/cli) to get started.
-
-### Theme Check
-
-We recommend using [Theme Check](https://github.com/shopify/theme-check) as a way to validate and lint your Shopify themes.
-
-We've added Theme Check to Dawn's [list of VS Code extensions](/.vscode/extensions.json) so if you're using Visual Studio Code as your code editor of choice, you'll be prompted to install the [Theme Check VS Code](https://marketplace.visualstudio.com/items?itemName=Shopify.theme-check-vscode) extension upon opening VS Code after you've forked and cloned Dawn.
-
-You can also run it from a terminal with the following Shopify CLI command:
+Requirements: Node.js 22.12+, Git 2.28+, Shopify CLI 5.
 
 ```bash
-shopify theme check
+shopify theme dev --store atelier-beauty-demo.myshopify.com   # local preview with hot reload
+shopify theme check                                           # lint
+shopify theme push --unpublished                              # upload as a new theme
 ```
 
-### Continuous Integration
+Store configuration (metafields, collections, menus, payments for testing) is documented in [`docs/SETUP-ADMIN.md`](docs/SETUP-ADMIN.md).
 
-Dawn uses [GitHub Actions](https://github.com/features/actions) to maintain the quality of the theme. [This is a starting point](https://github.com/Shopify/dawn/blob/main/.github/workflows/ci.yml) and what we suggest to use in order to ensure you're building better themes. Feel free to build off of it!
+## Content & licensing
 
-#### Shopify/lighthouse-ci-action
-
-We love fast websites! Which is why we created [Shopify/lighthouse-ci-action](https://github.com/Shopify/lighthouse-ci-action). This runs a series of [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) audits for the home, product and collections pages on a store to ensure code that gets added doesn't degrade storefront performance over time.
-
-#### Shopify/theme-check-action
-
-Dawn runs [Theme Check](#Theme-Check) on every commit via [Shopify/theme-check-action](https://github.com/Shopify/theme-check-action).
-
-## Contributing
-
-Want to make commerce better for everyone by contributing to Dawn? We'd love your help! Please read our [contributing guide](https://github.com/Shopify/dawn/blob/main/.github/CONTRIBUTING.md) to learn about our development process, how to propose bug fixes and improvements, and how to build for Dawn.
-
-## Code of conduct
-
-All developers who wish to contribute through code or issues, please first read our [Code of Conduct](https://github.com/Shopify/dawn/blob/main/.github/CODE_OF_CONDUCT.md).
-
-## Theme Store submission
-
-The [Shopify Theme Store](https://themes.shopify.com/) is the place where Shopify merchants find the themes that they'll use to showcase and support their business. As a theme partner, you can create themes for the Shopify Theme Store and reach an international audience of an ever-growing number of entrepreneurs.
-
-Ensure that you follow the list of [theme store requirements](https://shopify.dev/themes/store/requirements) if you're interested in becoming a [Shopify Theme Partner](https://themes.shopify.com/services/themes/guidelines) and building themes for the Shopify platform.
-
-## License
-
-Copyright (c) 2021-present Shopify Inc. See [LICENSE](/LICENSE.md) for further details.
+- Product names, descriptions, prices and ingredient lists are fictional and written for this demo. No dermatological or clinical claims are made.
+- Photography: [Pexels](https://www.pexels.com/license/) (free licence). Credit belongs to the original photographers.
+- Base theme: [Shopify Dawn](https://github.com/Shopify/dawn) — see `LICENSE.md`. Dawn's original README is kept at `docs/DAWN-README.md`.

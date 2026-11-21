@@ -1466,5 +1466,86 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Atelier Beauty",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shade swatches"
+      },
+      {
+        "type": "paragraph",
+        "content": "Product options with these names render as round shade swatches. Colour comes from the variant metafield custom.shade_hex, then from the palette below."
+      },
+      {
+        "type": "text",
+        "id": "ab_shade_option_names",
+        "label": "Shade option names",
+        "default": "Shade,Color,Colour,Tone",
+        "info": "Comma-separated, not case-sensitive."
+      },
+      {
+        "type": "textarea",
+        "id": "ab_shade_palette",
+        "label": "Shade palette",
+        "info": "One per line: Shade name: #hexcolor",
+        "default": "Bordeaux Silk: #5B1526"
+      },
+      {
+        "type": "header",
+        "content": "Product cards"
+      },
+      {
+        "type": "checkbox",
+        "id": "ab_card_show_shades",
+        "label": "Show shade dots on product cards",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "ab_card_max_shades",
+        "label": "Maximum shade dots",
+        "min": 3,
+        "max": 8,
+        "step": 1,
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "Cart"
+      },
+      {
+        "type": "checkbox",
+        "id": "ab_cart_discount_field",
+        "label": "Show discount code field",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "ab_free_shipping_enable",
+        "label": "Show free-shipping progress",
+        "default": false,
+        "info": "Turn on only after creating a matching free-shipping rate in Settings › Shipping and delivery. The theme cannot read shipping rules."
+      },
+      {
+        "type": "number",
+        "id": "ab_free_shipping_threshold",
+        "label": "Free-shipping threshold (store currency)",
+        "default": 50
+      },
+      {
+        "type": "collection",
+        "id": "ab_upsell_collection",
+        "label": "Cart cross-sell collection",
+        "info": "Up to 3 available products not already in the cart."
+      },
+      {
+        "type": "text",
+        "id": "ab_upsell_heading",
+        "label": "Cross-sell heading",
+        "default": "Complete the ritual"
+      }
+    ]
   }
 ]

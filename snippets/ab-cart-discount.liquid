@@ -1,0 +1,56 @@
+{%- doc -%}
+  Atelier Beauty — discount code field for the cart drawer and cart page.
+  Codes are applied with Shopify's Ajax Cart API (`/cart/update.js`, `discount` parameter); Shopify decides
+  whether a code is valid, and `cart.discount_codes` reports whether each one applies to this cart.
+
+  @param {string} id_prefix - Unique prefix for element IDs (e.g. `CartDrawer`, `CartPage`).
+
+  @example
+  {% render 'ab-cart-discount', id_prefix: 'CartDrawer' %}
+{%- enddoc -%}
+{%- if settings.ab_cart_discount_field and cart.item_count > 0 -%}
+  {%- assign ab_codes = cart.discount_codes | map: 'code' | join: ',' -%}
+  <ab-cart-discount class="ab-discount" data-codes="{{ ab_codes | escape }}">
+    <form class="ab-discount__form" novalidate>
+      <label class="ab-discount__label" for="{{ id_prefix }}-DiscountCode">Discount code</label>
+      <div class="ab-discount__field">
+        <input
+          id="{{ id_prefix }}-DiscountCode"
+          class="ab-discount__input"
+          type="text"
+          name="discount"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          placeholder="Enter code"
+          aria-describedby="{{ id_prefix }}-DiscountStatus"
+          required
+        >
+        <button type="submit" class="ab-discount__apply">
+          <span>Apply</span>
+          {%- render 'loading-spinner' -%}
+        </button>
+      </div>
+    </form>
+    <p id="{{ id_prefix }}-DiscountStatus" class="ab-discount__status" role="status" aria-live="polite">
+      {%- for code in cart.discount_codes -%}
+        {%- unless code.applicable -%}
+          “{{ code.code | escape }}” is not valid for the items in your bag.
+        {%- endunless -%}
+      {%- endfor -%}
+    </p>
+    {%- if cart.discount_codes.size > 0 -%}
+      <ul class="ab-discount__codes" role="list">
+        {%- for code in cart.discount_codes -%}
+          <li class="ab-discount__code{% unless code.applicable %} is-invalid{% endunless %}">
+            <span>{{ code.code | escape }}</span>
+            <button type="button" class="ab-discount__remove" data-remove-code="{{ code.code | escape }}">
+              <span aria-hidden="true">&times;</span>
+              <span class="visually-hidden">Remove code {{ code.code | escape }}</span>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </ab-cart-discount>
+{%- endif -%}
